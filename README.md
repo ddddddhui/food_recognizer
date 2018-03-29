@@ -80,13 +80,14 @@
   由于百度图片中爬取的图片五花八门非常复杂，有些图片和关键词差别很大，需要手动对其进行挑选，尽可能使得数据集贴近用户拍照菜品，由于是从demo开始，只使用蔬菜和水果作为数据集，后期可以再添加分类。
 - 图片压缩与转换，图片格式化（特征与标签的表示方式）
   因使用的是CNN识别cifar10的数据集，需要将图片转化为32*32 size大小的图片，并全部转化为RGB模式的图片：
-      #read file then return a (1,3072) array
-          def read_file(self, filename):
-              img = Image.open(filename)
-              img.convert('RGB') #转化为RGB
-              #print(filename)
-              img = img.resize((32,32)) #压缩为32*32
-              try:
+      		
+		#read file then return a (1,3072) array
+        	def read_file(self, filename):
+              	img = Image.open(filename)
+              	img.convert('RGB') #转化为RGB
+              	#print(filename)
+              	img = img.resize((32,32)) #压缩为32*32
+              	try:
                   red, green, blue = img.split()
                   red_arr = pltimg.pil_to_array(red)
                   green_arr = pltimg.pil_to_array(green)
@@ -98,11 +99,12 @@
       
                   result = np.concatenate((r_arr, g_arr, b_arr))
                   return result
-              except (ValueError):
+              	except (ValueError):
                   print(filename)
                   #img.show()
   压缩与转化完成后，将其与label合并后以字典的形式存储并写入文件：
-          def save_pickle(self, result, label, label_name):
+          
+	  def save_pickle(self, result, label, label_name):
               print("=====saving picture, please wait=====")
       
               dic = {'label': label, 'data':result, 'label_name': label_name}
@@ -112,6 +114,7 @@
       
               print("=====save mode end=====")
   其中label是在读取文件夹的时候以文件夹名称划分：
+  
       def get_file_name(local_path):
           label = []
           label_name = []
@@ -129,6 +132,7 @@
 
 - 使用上述代码将处理好的2692张蔬菜水果图片制作为训练数据集data_batch_train，将另外299张图片制作为测试数据集data_batch_test
 - 读取到data_batch文件中的data与label并进行存储返回
+
       #从文件中读取所有数据【label，image_data】
       def unpickle(filename):
           with open(filename, 'rb') as f:
@@ -157,6 +161,7 @@
           data = data.transpose([0,2,3,1])
           return data, labels
   由于训练数据集不是很多，选择对图像进行截取，移动等方法再进一步处理：
+  
       #图片截取
       def random_crop(batch, crop_shape, padding = None):
           img_shape = np.shape(batch[0])
